@@ -1,49 +1,48 @@
-version: '3'
-
-
+version: '3.2'
+    
 services:
   nginx:
-    image: nginxproxy/nginx-proxy
+    image: nginxproxy/nginx-proxy 
+    container_name: nginx
+    restart: always
     ports:
-      - "80:80"
+      - 80:80
+      - 443:443
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-
-  nginx-ssl:
-    image: nginxproxy/nginx-proxy
-    ports:
-      - "433:433"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - certs:/etc/nginx/certs:ro
-      - dhparam:/etc/nginx/dhparam:ro
-      - conf:/etc/nginx/conf.d
+      - ./certs:/etc/nginx/certs
+      - ./conf:/etc/nginx/conf.d
+      - dhparam:/etc/nginx/dhparam
       - vhost:/etc/nginx/vhost.d
-    depends_on:
+      - html:/usr/share/nginx/html
+    networks:
+      - default
       - nginx
-  
-  acme-companion:
+
+  acme:
     image: nginxproxy/acme-companion
+    container_name: acme
+    restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - certs:/etc/nginx/certs:rw
-      - dhparam:/etc/nginx/dhparam:rw
-      - conf:/etc/nginx/conf.d
+      - ./certs:/etc/nginx/certs
+      - ./conf:/etc/nginx/conf.d
+      - dhparam:/etc/nginx/dhparam
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - acme:/etc/acme.sh
     environment:
-      - NGINX_PROXY_CONTAINER=nginx-ssl
+      - NGINX_PROXY_CONTAINER=nginx
       - DEFAULT_EMAIL=your@email.com
     depends_on:
       - nginx
-      - nginx-ssl
 
 volumes:
-  certs:
-  dhparam:
-  conf:
-  vhost:
-
+    dhparam:
+    vhost:
+    html:
+    acme:
 
 networks:
-  default:
-    external:
-      name: nginx-proxy
+  nginx:
+    attachable: true
