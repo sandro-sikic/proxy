@@ -8,6 +8,8 @@ services:
     ports:
       - 80:80
       - 443:443
+    environment:
+      - TRUST_DOWNSTREAM_PROXY=false
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./certs:/etc/nginx/certs
@@ -17,7 +19,7 @@ services:
       - html:/usr/share/nginx/html
     networks:
       - default
-      - nginx
+      - network
 
   acme:
     image: nginxproxy/acme-companion
@@ -33,7 +35,7 @@ services:
       - acme:/etc/acme.sh
     environment:
       - NGINX_PROXY_CONTAINER=nginx
-      - DEFAULT_EMAIL=your@email.com
+      - DEFAULT_EMAIL=${DEFAULT_EMAIL}
     depends_on:
       - nginx
 
@@ -44,5 +46,5 @@ volumes:
     acme:
 
 networks:
-  nginx:
+  network:
     attachable: true
