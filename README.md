@@ -34,7 +34,7 @@ To get started with the reverse proxy, follow these steps:
 
 ## Stopping the reverse proxy
 
-All the containers that are using the proxy_nginx will have to be stopped before stopping the reverse proxy.
+All the containers that are using the proxy_network will have to be stopped before stopping the reverse proxy.
 
 1. Navigate to the cloned repository:
 
@@ -47,7 +47,7 @@ All the containers that are using the proxy_nginx will have to be stopped before
 To add a container to the reverse proxy, you need to do the following:
 
 - Add environment variables to the container you want to proxy
-- Connect the container to the `proxy_nginx` network
+- Connect the container to the `proxy_network` network
 
 example
 
@@ -66,7 +66,7 @@ services:
       - proxy_network
 
 networks:
-  proxy_nginx:
+  proxy_network:
     external: true
 ```
 
