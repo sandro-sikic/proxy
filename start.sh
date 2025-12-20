@@ -1,4 +1,4 @@
-CHECK_PROGRAMS=(docker docker-compose)
+CHECK_PROGRAMS=(docker docker compose)
 SHOULD_CONTINUE="true"
 
 # Check if programs are installed
@@ -40,8 +40,8 @@ fi
   
 # start docker compose
 echo "Starting docker compose..."
-docker-compose up --build -d
+docker compose up --build -d
 
 # show logs
 echo "Showing logs..."
-docker-compose logs -f
+docker compose logs -f
