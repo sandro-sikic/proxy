@@ -1,4 +1,4 @@
-CHECK_PROGRAMS=(docker docker compose)
+CHECK_PROGRAMS=(docker)
 SHOULD_CONTINUE="true"
 
 # Check if programs are installed
