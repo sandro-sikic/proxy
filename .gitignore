@@ -1,3 +1,4 @@
 /certs/*
 /conf/*
+!/conf/global.conf
 .env
